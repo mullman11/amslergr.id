@@ -277,8 +277,8 @@ body.red-on-black .controls {
     color: black;
 }
 
-/* Horizontal Lines Only mode */
-body.horizontal-only #verticalLines {
+/* Horizontal Lines Only mode - hide inner vertical lines, keep outer border */
+body.horizontal-only .grid-line-inner {
     display: none;
 }
 
