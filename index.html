@@ -116,9 +116,10 @@
 
                 <div class="calibration-controls">
                     <p id="calibrationInstruction">Use a physical ruler to measure the line above:</p>
-                    <div class="button-group">
-                        <button onclick="adjustSize(-0.1)">Smaller (-)</button>
-                        <button onclick="adjustSize(0.1)">Larger (+)</button>
+                    <div class="size-slider-row">
+                        <button onclick="adjustSize(-0.1)">-</button>
+                        <input type="range" id="sizeSlider" min="5.0" max="20.0" step="0.1" value="10.0" oninput="setSize(parseFloat(this.value))">
+                        <button onclick="adjustSize(0.1)">+</button>
                     </div>
                     <p class="size-display">Current size: <span id="currentSize">10.0</span> cm</p>
                 </div>
@@ -331,6 +332,7 @@
 
             // Update displays
             document.getElementById('currentSize').textContent = gridSizeCm.toFixed(1);
+            document.getElementById('sizeSlider').value = gridSizeCm;
 
             // Save to localStorage
             try {
@@ -340,6 +342,11 @@
 
         function adjustSize(delta) {
             gridSizeCm = Math.max(5.0, Math.min(20.0, gridSizeCm + delta));
+            updateGridSize();
+        }
+
+        function setSize(value) {
+            gridSizeCm = Math.max(5.0, Math.min(20.0, value));
             updateGridSize();
         }
 
