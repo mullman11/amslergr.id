@@ -148,13 +148,13 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.95);
     display: none;
-    justify-content: center;
-    align-items: center;
     z-index: 3000;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-warning-card {
@@ -162,8 +162,13 @@ body {
     padding: 40px 30px;
     border-radius: 16px;
     max-width: 340px;
+    width: calc(100% - 40px);
     text-align: center;
-    margin: 20px;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .mobile-warning-icon {
@@ -185,8 +190,9 @@ body {
 }
 
 .mobile-app-button {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     background-color: #000;
     color: white;
@@ -204,6 +210,8 @@ body {
 }
 
 .mobile-continue-button {
+    display: block;
+    width: 100%;
     background: none;
     border: none;
     color: #999;

@@ -399,7 +399,7 @@
             const warning = document.getElementById('mobileWarning');
             const isSmallScreen = window.innerWidth < 768;
             if (isSmallScreen && !sessionStorage.getItem('mobileWarningDismissed')) {
-                warning.style.display = 'flex';
+                warning.style.display = 'block';
             }
         }
         function dismissMobileWarning() {
