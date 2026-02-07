@@ -231,16 +231,27 @@ body {
     }
 }
 
+/* Grid line default styles */
+.grid-line {
+    stroke: black;
+    stroke-width: 1;
+}
+
+svg circle {
+    fill: black;
+}
+
+/* White on Black mode */
 body.inverted {
     background-color: black;
 }
 
-body.inverted svg line {
-    stroke: white !important;
+body.inverted .grid-line {
+    stroke: white;
 }
 
 body.inverted svg circle {
-    fill: white !important;
+    fill: white;
 }
 
 body.inverted .controls {
@@ -248,16 +259,17 @@ body.inverted .controls {
     color: black;
 }
 
+/* Red on Black mode */
 body.red-on-black {
     background-color: black;
 }
 
-body.red-on-black svg line {
-    stroke: red !important;
+body.red-on-black .grid-line {
+    stroke: red;
 }
 
 body.red-on-black svg circle {
-    fill: red !important;
+    fill: red;
 }
 
 body.red-on-black .controls {
@@ -265,6 +277,7 @@ body.red-on-black .controls {
     color: black;
 }
 
+/* Horizontal Lines Only mode */
 body.horizontal-only #verticalLines {
     display: none;
 }
