@@ -144,6 +144,11 @@
                 <g id="horizontalLines"></g>
                 <!-- Vertical lines -->
                 <g id="verticalLines"></g>
+                <!-- Diagonal lines (toggled via Settings) -->
+                <g id="diagonalLines" style="display: none">
+                    <line x1="0" y1="0" x2="400" y2="400" stroke="black" stroke-width="1" />
+                    <line x1="400" y1="0" x2="0" y2="400" stroke="black" stroke-width="1" />
+                </g>
                 <!-- Center dot -->
                 <circle cx="200" cy="200" r="3" fill="black" />
             </svg>
@@ -222,17 +227,38 @@
         </div>
 
 
+        <!-- Settings Modal -->
+        <div class="settings-modal" id="settingsModal">
+            <div class="settings-card">
+                <h2>Settings</h2>
+                <div class="settings-row">
+                    <span>Calibrate Grid Size</span>
+                    <button class="settings-action-button" onclick="hideSettings(); showCalibration();">
+                        <i data-lucide="ruler"></i> Calibrate
+                    </button>
+                </div>
+                <div class="settings-row">
+                    <span>Diagonal Lines</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="diagonalToggle" onchange="toggleDiagonals()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <button class="close-button" onclick="hideSettings()">Close</button>
+            </div>
+        </div>
+
         <!-- Controls -->
         <div class="controls" id="controls">
             <div class="button-row">
                 <button onclick="showInstructions()"><i data-lucide="book-open"></i> Instructions</button>
-                <button onclick="showCalibration()"><i data-lucide="ruler"></i> Calibrate</button>
+                <button onclick="showSettings()"><i data-lucide="settings"></i> Settings</button>
                 <button onclick="printGrid()"><i data-lucide="printer"></i> Print</button>
                 <button onclick="toggleControls()"><i data-lucide="eye-off"></i> Hide</button>
                 <button onclick="enterFullscreen()"><i data-lucide="maximize"></i> Fullscreen</button>
             </div>
             <div class="info">
-                <p class="small">I: Instructions | H: Toggle controls | F: Fullscreen | C: Calibrate | P: Print | <a href="https://MyCallBag.com" target="_blank" style="color: inherit;">&copy; 2025 My Call Bag LLC</a></p>
+                <p class="small">I: Instructions | H: Toggle controls | F: Fullscreen | S: Settings | P: Print | <a href="https://MyCallBag.com" target="_blank" style="color: inherit;">&copy; 2025 My Call Bag LLC</a></p>
             </div>
         </div>
     </div>
@@ -402,6 +428,35 @@
             document.getElementById('instructionsModal').style.display = 'none';
         }
 
+        // Settings modal functions
+        function showSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function hideSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        // Diagonal lines toggle
+        let diagonalsVisible = false;
+        try {
+            diagonalsVisible = localStorage.getItem('amslerDiagonalLines') === 'true';
+        } catch (e) {}
+
+        function toggleDiagonals() {
+            diagonalsVisible = document.getElementById('diagonalToggle').checked;
+            document.getElementById('diagonalLines').style.display = diagonalsVisible ? 'block' : 'none';
+            try {
+                localStorage.setItem('amslerDiagonalLines', diagonalsVisible.toString());
+            } catch (e) {}
+        }
+
+        // Restore diagonal state on load
+        if (diagonalsVisible) {
+            document.getElementById('diagonalToggle').checked = true;
+            document.getElementById('diagonalLines').style.display = 'block';
+        }
+
         // Keyboard shortcuts
         document.addEventListener('keydown', function(event) {
             if (event.key === 'i' || event.key === 'I') {
@@ -410,8 +465,8 @@
                 toggleControls();
             } else if (event.key === 'f' || event.key === 'F') {
                 enterFullscreen();
-            } else if (event.key === 'c' || event.key === 'C') {
-                showCalibration();
+            } else if (event.key === 's' || event.key === 'S') {
+                showSettings();
             } else if (event.key === 'p' || event.key === 'P') {
                 printGrid();
             } else if (event.key === '+' || event.key === '=') {
@@ -420,6 +475,7 @@
                 adjustSize(-0.1);
             } else if (event.key === 'Escape') {
                 hideInstructions();
+                hideSettings();
             }
         });
 
