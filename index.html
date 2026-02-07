@@ -244,6 +244,13 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
+                <div class="settings-row">
+                    <span>White on Black</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="invertedToggle" onchange="toggleInverted()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
                 <button class="close-button" onclick="hideSettings()">Close</button>
             </div>
         </div>
@@ -455,6 +462,26 @@
         if (diagonalsVisible) {
             document.getElementById('diagonalToggle').checked = true;
             document.getElementById('diagonalLines').style.display = 'block';
+        }
+
+        // White on Black (inverted) toggle
+        let invertedMode = false;
+        try {
+            invertedMode = localStorage.getItem('amslerInverted') === 'true';
+        } catch (e) {}
+
+        function toggleInverted() {
+            invertedMode = document.getElementById('invertedToggle').checked;
+            document.body.classList.toggle('inverted', invertedMode);
+            try {
+                localStorage.setItem('amslerInverted', invertedMode.toString());
+            } catch (e) {}
+        }
+
+        // Restore inverted state on load
+        if (invertedMode) {
+            document.getElementById('invertedToggle').checked = true;
+            document.body.classList.add('inverted');
         }
 
         // Keyboard shortcuts
