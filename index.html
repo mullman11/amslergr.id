@@ -251,6 +251,20 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
+                <div class="settings-row">
+                    <span>Red on Black</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="redOnBlackToggle" onchange="toggleRedOnBlack()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="settings-row">
+                    <span>Horizontal Lines Only</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="horizontalOnlyToggle" onchange="toggleHorizontalOnly()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
                 <button class="close-button" onclick="hideSettings()">Close</button>
             </div>
         </div>
@@ -473,6 +487,13 @@
         function toggleInverted() {
             invertedMode = document.getElementById('invertedToggle').checked;
             document.body.classList.toggle('inverted', invertedMode);
+            // Turn off Red on Black if enabling White on Black
+            if (invertedMode && redOnBlackMode) {
+                redOnBlackMode = false;
+                document.getElementById('redOnBlackToggle').checked = false;
+                document.body.classList.remove('red-on-black');
+                try { localStorage.setItem('amslerRedOnBlack', 'false'); } catch (e) {}
+            }
             try {
                 localStorage.setItem('amslerInverted', invertedMode.toString());
             } catch (e) {}
@@ -482,6 +503,53 @@
         if (invertedMode) {
             document.getElementById('invertedToggle').checked = true;
             document.body.classList.add('inverted');
+        }
+
+        // Red on Black toggle
+        let redOnBlackMode = false;
+        try {
+            redOnBlackMode = localStorage.getItem('amslerRedOnBlack') === 'true';
+        } catch (e) {}
+
+        function toggleRedOnBlack() {
+            redOnBlackMode = document.getElementById('redOnBlackToggle').checked;
+            document.body.classList.toggle('red-on-black', redOnBlackMode);
+            // Turn off White on Black if enabling Red on Black
+            if (redOnBlackMode && invertedMode) {
+                invertedMode = false;
+                document.getElementById('invertedToggle').checked = false;
+                document.body.classList.remove('inverted');
+                try { localStorage.setItem('amslerInverted', 'false'); } catch (e) {}
+            }
+            try {
+                localStorage.setItem('amslerRedOnBlack', redOnBlackMode.toString());
+            } catch (e) {}
+        }
+
+        // Restore red on black state on load
+        if (redOnBlackMode) {
+            document.getElementById('redOnBlackToggle').checked = true;
+            document.body.classList.add('red-on-black');
+        }
+
+        // Horizontal Lines Only toggle
+        let horizontalOnlyMode = false;
+        try {
+            horizontalOnlyMode = localStorage.getItem('amslerHorizontalOnly') === 'true';
+        } catch (e) {}
+
+        function toggleHorizontalOnly() {
+            horizontalOnlyMode = document.getElementById('horizontalOnlyToggle').checked;
+            document.body.classList.toggle('horizontal-only', horizontalOnlyMode);
+            try {
+                localStorage.setItem('amslerHorizontalOnly', horizontalOnlyMode.toString());
+            } catch (e) {}
+        }
+
+        // Restore horizontal only state on load
+        if (horizontalOnlyMode) {
+            document.getElementById('horizontalOnlyToggle').checked = true;
+            document.body.classList.add('horizontal-only');
         }
 
         // Keyboard shortcuts
