@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amsler Grid - Lensometer Reference Target</title>
+    <meta name="apple-itunes-app" content="app-id=6474520987">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Sponsor Banner -->
+    <div class="sponsor-banner" id="sponsorBanner">
+        <a href="https://MyCallBag.com" target="_blank" id="sponsorLink" class="sponsor-link">
+            <img src="mycallbag-logo.jpg" alt="My Call Bag" class="sponsor-logo">
+            <div class="sponsor-text">
+                <span class="sponsor-label">Provided free by</span>
+                <span class="sponsor-name">My Call Bag</span>
+                <span class="sponsor-tagline">The ultimate app for eye doctors</span>
+            </div>
+        </a>
+        <a href="https://apps.apple.com/us/app/amsler-grid-app/id6474520987" target="_blank" id="sponsorQRLink" class="sponsor-qr-link" aria-label="Download on the App Store">
+            <img src="appstore-qr.png" alt="Download App" class="sponsor-qr">
+        </a>
+        <button class="sponsor-dismiss" id="sponsorDismiss" aria-label="Dismiss banner"><i data-lucide="x"></i></button>
+    </div>
+
+    <div class="container">
+        <!-- Calibration overlay -->
+        <div class="calibration-overlay" id="calibrationOverlay">
+            <div class="calibration-card">
+                <h2>Calibration Required</h2>
+                <p>To ensure accurate measurements, the Amsler grid must be exactly <strong>10 cm × 10 cm</strong>.</p>
+
+                <!-- Calibration method selector -->
+                <div class="calibration-method-selector">
+                    <button class="method-button active" id="rulerMethodBtn" onclick="switchCalibrationMethod('ruler')">Use Ruler</button>
+                    <button class="method-button" id="cardMethodBtn" onclick="switchCalibrationMethod('card')">Use Credit Card</button>
+                </div>
+
+                <!-- Ruler calibration method -->
+                <div class="calibration-ruler" id="rulerCalibration">
+                    <div class="ruler-line" id="rulerLine"></div>
+                    <p class="ruler-label">This line should measure exactly 5 cm (1.97 inches)</p>
+                </div>
+
+                <!-- Credit card calibration method -->
+                <div class="calibration-ruler" id="cardCalibration" style="display: none;">
+                    <div class="card-outline" id="cardOutline">
+                        <p class="card-label">Credit Card</p>
+                    </div>
+                    <p class="ruler-label">Place a credit card over this box - it should match exactly</p>
+                </div>
+
+                <div class="calibration-controls">
+                    <p id="calibrationInstruction">Use a physical ruler to measure the line above:</p>
+                    <div class="button-group">
+                        <button onclick="adjustSize(-0.1)">Smaller (-)</button>
+                        <button onclick="adjustSize(0.1)">Larger (+)</button>
+                    </div>
+                    <p class="size-display">Current size: <span id="currentSize">10.0</span> cm</p>
+                </div>
+
+                <div class="calibration-tips">
+                    <p><strong>Tips:</strong></p>
+                    <ul id="calibrationTipsList">
+                        <li>Use a real ruler or measuring tape</li>
+                        <li>Measure from the left edge to the right edge of the line</li>
+                        <li>Adjust until it measures exactly 5 cm</li>
+                    </ul>
+                </div>
+
+                <button class="confirm-button" onclick="confirmCalibration()">Confirm - Grid is 10cm × 10cm</button>
+                <button class="skip-button" onclick="skipCalibration()">Skip Calibration</button>
+            </div>
+        </div>
+
+        <!-- Main grid -->
+        <div class="grid-container" id="gridContainer">
+            <svg id="amslerGrid" viewBox="0 0 400 400" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+                <!-- Horizontal lines -->
+                <g id="horizontalLines"></g>
+                <!-- Vertical lines -->
+                <g id="verticalLines"></g>
+                <!-- Center dot -->
+                <circle cx="200" cy="200" r="3" fill="black" />
+            </svg>
+        </div>
+
+        <!-- Print calibration verification (hidden on screen, visible when printed) -->
+        <div class="print-calibration">
+            <h2>📐 Verify Print Size</h2>
+            <p><strong>IMPORTANT:</strong> Before using this grid, verify it printed at the correct size.</p>
+
+            <div class="print-verification-box">
+                <h3>Method 1: Ruler Verification</h3>
+                <div class="print-ruler-line"></div>
+                <p>This line should measure exactly <strong>10 cm (3.94 inches)</strong></p>
+            </div>
+
+            <div class="print-verification-box">
+                <h3>Method 2: Credit Card Verification</h3>
+                <div class="print-card-outline">
+                    <p>Credit Card</p>
+                </div>
+                <p>A standard credit card should fit perfectly in this box<br>
+                Card dimensions: 8.56 cm × 5.4 cm (3.37" × 2.125")</p>
+            </div>
+
+            <p class="verification-note">⚠️ If the measurements don't match exactly, adjust your printer settings to "Actual Size" or "100% scale" and print again.</p>
+        </div>
+
+        <!-- Instructions for printing (hidden on screen, visible when printed) -->
+        <div class="print-instructions">
+            <h2>How to Use the Amsler Grid</h2>
+            <ol>
+                <li><strong>Distance:</strong> Hold this grid 12-15 inches (30-38 cm) away from your eyes in good lighting.</li>
+                <li><strong>Glasses:</strong> Wear your reading glasses if you normally use them.</li>
+                <li><strong>Cover One Eye:</strong> Cover one eye with your hand.</li>
+                <li><strong>Focus on Center Dot:</strong> Look directly at the center dot with your uncovered eye. Keep your eye focused on the center dot.</li>
+                <li><strong>Check the Grid:</strong> While staring at the center dot, use your peripheral vision to check if:
+                    <ul>
+                        <li>All grid lines appear straight (not wavy or distorted)</li>
+                        <li>All areas are clear (no dark, blurry, or blank spots)</li>
+                        <li>You can see all four corners of the grid</li>
+                    </ul>
+                </li>
+                <li><strong>Test Other Eye:</strong> Repeat steps 3-5 with your other eye covered.</li>
+            </ol>
+            <p class="warning-note"><strong>Note:</strong> If you notice any wavy lines, blurry areas, dark spots, or distortions, contact your eye doctor immediately. This grid is for monitoring vision changes, not for diagnosis.</p>
+        </div>
+
+        <!-- Instructions Modal -->
+        <div class="instructions-modal" id="instructionsModal">
+            <div class="instructions-card">
+                <h2>How to Use the Amsler Grid</h2>
+                <div class="instructions-content">
+                    <ol>
+                        <li><strong>Distance:</strong> Position the grid 12-15 inches (30-38 cm) from your eyes in good lighting.</li>
+                        <li><strong>Glasses:</strong> Wear your reading glasses if you normally use them.</li>
+                        <li><strong>Cover One Eye:</strong> Cover one eye with your hand.</li>
+                        <li><strong>Focus on Center Dot:</strong> Look directly at the center dot with your uncovered eye. Keep staring at it.</li>
+                        <li><strong>Check the Grid:</strong> While focusing on the center dot, use your peripheral vision to check:
+                            <ul>
+                                <li>Are all grid lines straight? (not wavy or distorted)</li>
+                                <li>Are all areas clear? (no dark, blurry, or blank spots)</li>
+                                <li>Can you see all four corners?</li>
+                            </ul>
+                        </li>
+                        <li><strong>Test Other Eye:</strong> Repeat with your other eye covered.</li>
+                    </ol>
+                    <div class="warning-box">
+                        <p><strong>⚠️ When to Contact Your Doctor:</strong></p>
+                        <p>If you notice wavy lines, blurry areas, dark spots, or distortions, contact your eye doctor immediately.</p>
+                    </div>
+                    <p class="note"><em>This grid is used to monitor macular degeneration and other vision changes. Regular daily testing is recommended for those at risk.</em></p>
+                </div>
+                <button class="close-button" onclick="hideInstructions()">Close</button>
+            </div>
+        </div>
+
+
+        <!-- Controls -->
+        <div class="controls" id="controls">
+            <div class="button-row">
+                <button onclick="showInstructions()"><i data-lucide="book-open"></i> Instructions</button>
+                <button onclick="showCalibration()"><i data-lucide="ruler"></i> Calibrate</button>
+                <button onclick="printGrid()"><i data-lucide="printer"></i> Print</button>
+                <button onclick="toggleControls()"><i data-lucide="eye-off"></i> Hide</button>
+                <button onclick="enterFullscreen()"><i data-lucide="maximize"></i> Fullscreen</button>
+            </div>
+            <div class="info">
+                <p class="small">I: Instructions | H: Toggle controls | F: Fullscreen | C: Calibrate | P: Print | <a href="https://MyCallBag.com" target="_blank" style="color: inherit;">&copy; 2025 My Call Bag LLC</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate Amsler grid lines (20x20 grid)
+        const gridSize = 20;
+        const viewBoxSize = 400;
+        const spacing = viewBoxSize / gridSize;
+
+        const horizontalGroup = document.getElementById('horizontalLines');
+        const verticalGroup = document.getElementById('verticalLines');
+
+        // Create horizontal lines
+        for (let i = 0; i <= gridSize; i++) {
+            const y = i * spacing;
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', '0');
+            line.setAttribute('y1', y);
+            line.setAttribute('x2', viewBoxSize);
+            line.setAttribute('y2', y);
+            line.setAttribute('stroke', 'black');
+            line.setAttribute('stroke-width', '1');
+            horizontalGroup.appendChild(line);
+        }
+
+        // Create vertical lines
+        for (let i = 0; i <= gridSize; i++) {
+            const x = i * spacing;
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x);
+            line.setAttribute('y1', '0');
+            line.setAttribute('x2', x);
+            line.setAttribute('y2', viewBoxSize);
+            line.setAttribute('stroke', 'black');
+            line.setAttribute('stroke-width', '1');
+            verticalGroup.appendChild(line);
+        }
+
+        // Size management with persistent storage
+        let gridSizeCm = 10.0;
+        try {
+            const saved = localStorage.getItem('amslerGridSize');
+            if (saved) gridSizeCm = parseFloat(saved) || 10.0;
+        } catch (e) {}
+        updateGridSize();
+
+        function updateGridSize() {
+            // Set CSS custom property for size
+            document.documentElement.style.setProperty('--grid-size', gridSizeCm + 'cm');
+
+            // Update displays
+            document.getElementById('currentSize').textContent = gridSizeCm.toFixed(1);
+
+            // Save to localStorage
+            try {
+                localStorage.setItem('amslerGridSize', gridSizeCm.toString());
+            } catch (e) {}
+        }
+
+        function adjustSize(delta) {
+            gridSizeCm = Math.max(5.0, Math.min(20.0, gridSizeCm + delta));
+            updateGridSize();
+        }
+
+        function showCalibration() {
+            document.getElementById('calibrationOverlay').style.display = 'flex';
+        }
+
+        function confirmCalibration() {
+            document.getElementById('calibrationOverlay').style.display = 'none';
+            try {
+                localStorage.setItem('amslerGridCalibrated', 'true');
+            } catch (e) {}
+        }
+
+        function skipCalibration() {
+            document.getElementById('calibrationOverlay').style.display = 'none';
+            try {
+                localStorage.setItem('amslerGridCalibrated', 'true');
+            } catch (e) {}
+        }
+
+        // Calibration method switching
+        function switchCalibrationMethod(method) {
+            const rulerCalibration = document.getElementById('rulerCalibration');
+            const cardCalibration = document.getElementById('cardCalibration');
+            const rulerMethodBtn = document.getElementById('rulerMethodBtn');
+            const cardMethodBtn = document.getElementById('cardMethodBtn');
+            const instruction = document.getElementById('calibrationInstruction');
+            const tipsList = document.getElementById('calibrationTipsList');
+
+            if (method === 'ruler') {
+                rulerCalibration.style.display = 'block';
+                cardCalibration.style.display = 'none';
+                rulerMethodBtn.classList.add('active');
+                cardMethodBtn.classList.remove('active');
+                instruction.textContent = 'Use a physical ruler to measure the line above:';
+                tipsList.innerHTML = `
+                    <li>Use a real ruler or measuring tape</li>
+                    <li>Measure from the left edge to the right edge of the line</li>
+                    <li>Adjust until it measures exactly 5 cm</li>
+                `;
+            } else if (method === 'card') {
+                rulerCalibration.style.display = 'none';
+                cardCalibration.style.display = 'block';
+                rulerMethodBtn.classList.remove('active');
+                cardMethodBtn.classList.add('active');
+                instruction.textContent = 'Place a credit card on your screen over the box above:';
+                tipsList.innerHTML = `
+                    <li>Use any standard credit card, debit card, or ID card</li>
+                    <li>Place the card flat on your screen over the outlined box</li>
+                    <li>Adjust until the card fits perfectly within the outline</li>
+                    <li>Standard card size: 8.56 cm × 5.4 cm (3.37" × 2.125")</li>
+                `;
+            }
+        }
+
+        // Show calibration on first load (skip if already calibrated)
+        try {
+            if (!localStorage.getItem('amslerGridCalibrated')) {
+                showCalibration();
+            }
+        } catch (e) {
+            showCalibration();
+        }
+
+        // Toggle controls visibility
+        let controlsVisible = true;
+        function toggleControls() {
+            controlsVisible = !controlsVisible;
+            const controls = document.getElementById('controls');
+            const banner = document.getElementById('sponsorBanner');
+            if (controlsVisible) {
+                controls.style.display = 'flex';
+                if (banner) banner.style.display = 'flex';
+            } else {
+                controls.style.display = 'none';
+                if (banner) banner.style.display = 'none';
+            }
+        }
+
+        // Fullscreen function
+        function enterFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
+
+        // Print function - opens the pre-generated PDF
+        function printGrid() {
+            // Open the pre-generated PDF file
+            window.open('amsler-grid.pdf', '_blank');
+        }
+
+        // Instructions modal functions
+        function showInstructions() {
+            document.getElementById('instructionsModal').style.display = 'flex';
+        }
+
+        function hideInstructions() {
+            document.getElementById('instructionsModal').style.display = 'none';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'i' || event.key === 'I') {
+                showInstructions();
+            } else if (event.key === 'h' || event.key === 'H') {
+                toggleControls();
+            } else if (event.key === 'f' || event.key === 'F') {
+                enterFullscreen();
+            } else if (event.key === 'c' || event.key === 'C') {
+                showCalibration();
+            } else if (event.key === 'p' || event.key === 'P') {
+                printGrid();
+            } else if (event.key === '+' || event.key === '=') {
+                adjustSize(0.1);
+            } else if (event.key === '-' || event.key === '_') {
+                adjustSize(-0.1);
+            } else if (event.key === 'Escape') {
+                hideInstructions();
+            }
+        });
+
+        // Hide controls after 3 seconds
+        setTimeout(() => {
+            const controls = document.getElementById('controls');
+            controls.style.opacity = '0.3';
+            controls.style.transition = 'opacity 0.3s';
+        }, 3000);
+
+        // Show controls on mouse move
+        document.addEventListener('mousemove', function() {
+            const controls = document.getElementById('controls');
+            controls.style.opacity = '1';
+        });
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // --- Sponsor Banner ---
+        const sponsorBanner = document.getElementById('sponsorBanner');
+        const sponsorLink = document.getElementById('sponsorLink');
+        const sponsorQRLink = document.getElementById('sponsorQRLink');
+        const sponsorDismiss = document.getElementById('sponsorDismiss');
+
+        // Track custom events via GoatCounter
+        function trackEvent(name) {
+            if (window.goatcounter && goatcounter.count) {
+                goatcounter.count({ path: 'banner-' + name, title: 'Banner ' + name, event: true });
+            }
+        }
+
+        // Track banner view
+        trackEvent('view');
+
+        // Track banner click
+        sponsorLink.addEventListener('click', function() {
+            trackEvent('click');
+        });
+
+        // Track QR code click
+        sponsorQRLink.addEventListener('click', function() {
+            trackEvent('qr-click');
+        });
+
+        // Dismiss banner
+        sponsorDismiss.addEventListener('click', function() {
+            trackEvent('dismiss');
+            sponsorBanner.classList.add('dismissed');
+            setTimeout(() => { sponsorBanner.style.display = 'none'; }, 300);
+        });
+    </script>
+
+    <script data-goatcounter="https://mycallbag.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
