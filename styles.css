@@ -119,20 +119,7 @@ body {
 }
 
 @media (max-width: 768px) {
-    .sponsor-logo {
-        width: 28px;
-        height: 28px;
-    }
-
-    .sponsor-name {
-        font-size: 13px;
-    }
-
-    .sponsor-tagline {
-        display: none;
-    }
-
-    .sponsor-qr-link {
+    .sponsor-banner {
         display: none;
     }
 }
@@ -632,6 +619,10 @@ body.horizontal-only .grid-line-inner {
     .size-indicator {
         font-size: 12px;
         padding: 6px 12px;
+    }
+
+    .fullscreen-btn {
+        display: none !important;
     }
 }
 
