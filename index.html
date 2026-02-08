@@ -426,13 +426,24 @@
             }
         }
 
-        // Show calibration on first load (skip if already calibrated)
+        // Show calibration on first load (skip if already calibrated or on mobile)
+        var isMobile = window.innerWidth < 768;
         try {
-            if (!localStorage.getItem('amslerGridCalibrated')) {
+            if (!isMobile && !localStorage.getItem('amslerGridCalibrated')) {
                 showCalibration();
             }
         } catch (e) {
-            showCalibration();
+            if (!isMobile) showCalibration();
+        }
+
+        // Disable calibrate button on mobile
+        if (isMobile) {
+            var calBtn = document.querySelector('.settings-action-button');
+            calBtn.disabled = true;
+            calBtn.style.opacity = '0.4';
+            calBtn.style.cursor = 'default';
+            calBtn.onclick = null;
+            calBtn.parentElement.querySelector('span').innerHTML = 'Calibrate Grid Size<br><small style="color:#999;font-weight:normal;">Screen too small for calibration</small>';
         }
 
         // Toggle controls visibility
