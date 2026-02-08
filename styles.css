@@ -254,10 +254,6 @@ body.inverted svg circle {
     fill: white;
 }
 
-body.inverted .controls {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: black;
-}
 
 /* Red on Black mode */
 body.red-on-black {
@@ -272,10 +268,6 @@ body.red-on-black svg circle {
     fill: red;
 }
 
-body.red-on-black .controls {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: black;
-}
 
 /* Horizontal Lines Only mode - hide inner vertical lines, keep outer border */
 body.horizontal-only .grid-line-inner {
