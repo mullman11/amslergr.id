@@ -551,17 +551,16 @@ body.horizontal-only .grid-line-inner {
 /* Controls */
 .controls {
     position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: #000;
     color: white;
-    padding: 15px 25px;
-    border-radius: 12px;
+    padding: 12px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     z-index: 1000;
     transition: opacity 0.3s;
 }
@@ -624,13 +623,13 @@ body.horizontal-only .grid-line-inner {
     }
 
     .controls {
-        padding: 10px 15px;
+        padding: 8px 10px;
         font-size: 12px;
     }
 
     .controls button {
         font-size: 12px;
-        padding: 6px 12px;
+        padding: 6px 10px;
     }
 
     .size-indicator {
