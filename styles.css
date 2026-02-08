@@ -119,7 +119,20 @@ body {
 }
 
 @media (max-width: 768px) {
-    .sponsor-banner {
+    .sponsor-logo {
+        width: 28px;
+        height: 28px;
+    }
+
+    .sponsor-name {
+        font-size: 13px;
+    }
+
+    .sponsor-tagline {
+        display: none;
+    }
+
+    .sponsor-qr-link {
         display: none;
     }
 }
