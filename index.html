@@ -578,19 +578,6 @@
             }
         });
 
-        // Hide controls after 3 seconds
-        setTimeout(() => {
-            const controls = document.getElementById('controls');
-            controls.style.opacity = '0.3';
-            controls.style.transition = 'opacity 0.3s';
-        }, 3000);
-
-        // Show controls on mouse move
-        document.addEventListener('mousemove', function() {
-            const controls = document.getElementById('controls');
-            controls.style.opacity = '1';
-        });
-
         // Mobile detection - show warning on small screens
         function checkMobileScreen() {
             const warning = document.getElementById('mobileWarning');

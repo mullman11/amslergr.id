@@ -562,7 +562,6 @@ body.horizontal-only .grid-line-inner {
     align-items: center;
     gap: 8px;
     z-index: 1000;
-    transition: opacity 0.3s;
 }
 
 .button-row {
