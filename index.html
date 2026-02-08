@@ -38,6 +38,18 @@
         "author": {
             "@type": "Organization",
             "name": "My Call Bag LLC"
+        },
+        "creator": {
+            "@type": "MedicalBusiness",
+            "name": "Ullman Eye Consultants",
+            "url": "https://ullmaneye.com",
+            "description": "Pensacola's favorite cataract surgeons providing comprehensive eye care including cataract surgery, LASIK, and retina care.",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Pensacola",
+                "addressRegion": "FL"
+            },
+            "medicalSpecialty": "Ophthalmology"
         }
     }
     </script>
@@ -221,6 +233,18 @@
                         <p>If you notice wavy lines, blurry areas, dark spots, or distortions, contact your eye doctor immediately.</p>
                     </div>
                     <p class="note"><em>This grid is used to monitor macular degeneration and other vision changes. Regular daily testing is recommended for those at risk.</em></p>
+                    <div class="keyboard-shortcuts">
+                        <p><strong>Keyboard Shortcuts:</strong></p>
+                        <ul>
+                            <li><strong>I</strong> — Instructions</li>
+                            <li><strong>H</strong> — Toggle controls</li>
+                            <li><strong>F</strong> — Fullscreen</li>
+                            <li><strong>S</strong> — Settings</li>
+                            <li><strong>P</strong> — Print</li>
+                            <li><strong>+ / −</strong> — Adjust grid size</li>
+                            <li><strong>Esc</strong> — Close dialogs</li>
+                        </ul>
+                    </div>
                 </div>
                 <button class="close-button" onclick="hideInstructions()">Close</button>
             </div>
@@ -279,7 +303,7 @@
                 <button onclick="enterFullscreen()"><i data-lucide="maximize"></i> Fullscreen</button>
             </div>
             <div class="info">
-                <p class="small">I: Instructions | H: Toggle controls | F: Fullscreen | S: Settings | P: Print | <a href="https://MyCallBag.com" target="_blank" style="color: inherit;">&copy; 2025 My Call Bag LLC</a></p>
+                <p class="small">Created by <a href="https://UllmanEye.com" target="_blank" style="color: inherit; text-decoration: underline;">Pensacola's Favorite Cataract Surgeons</a></p>
             </div>
         </div>
     </div>
