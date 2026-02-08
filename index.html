@@ -64,7 +64,6 @@
         <a href="https://apps.apple.com/us/app/amsler-grid-app/id6474520987" target="_blank" id="sponsorQRLink" class="sponsor-qr-link" aria-label="Download on the App Store">
             <img src="appstore-qr.png" alt="Download App" class="sponsor-qr">
         </a>
-        <button class="sponsor-dismiss" id="sponsorDismiss" aria-label="Dismiss banner"><i data-lucide="x"></i></button>
     </div>
 
     <!-- Mobile Screen Warning -->
@@ -613,7 +612,6 @@
         const sponsorBanner = document.getElementById('sponsorBanner');
         const sponsorLink = document.getElementById('sponsorLink');
         const sponsorQRLink = document.getElementById('sponsorQRLink');
-        const sponsorDismiss = document.getElementById('sponsorDismiss');
 
         // Track custom events via GoatCounter
         function trackEvent(name) {
@@ -633,13 +631,6 @@
         // Track QR code click
         sponsorQRLink.addEventListener('click', function() {
             trackEvent('qr-click');
-        });
-
-        // Dismiss banner
-        sponsorDismiss.addEventListener('click', function() {
-            trackEvent('dismiss');
-            sponsorBanner.classList.add('dismissed');
-            setTimeout(() => { sponsorBanner.style.display = 'none'; }, 300);
         });
     </script>
 
