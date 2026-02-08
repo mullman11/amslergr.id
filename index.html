@@ -418,11 +418,11 @@
             const controls = document.getElementById('controls');
             const banner = document.getElementById('sponsorBanner');
             if (controlsVisible) {
-                controls.style.display = 'flex';
-                if (banner) banner.style.display = 'flex';
+                controls.classList.remove('hidden');
+                if (banner) banner.classList.remove('dismissed');
             } else {
-                controls.style.display = 'none';
-                if (banner) banner.style.display = 'none';
+                controls.classList.add('hidden');
+                if (banner) banner.classList.add('dismissed');
             }
         }
 
